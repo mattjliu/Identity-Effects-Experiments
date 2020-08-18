@@ -47,7 +47,7 @@ optional arguments:
 
 For example, the command `python main.py FFWD ALPHA -i 5000 -u 256 -e distributed -r 40 -l 0.025 -o SGD -v` runs the FFWD Alphabet Distributed experiment.
 
-You can also the experiments from `experiments.ipynb`.
+You can also run the experiments from `experiments.ipynb`.
 
 ## CV Model
 
@@ -80,7 +80,7 @@ optional arguments:
 
 For example, run `python predict_CV.py -w <weights_filepath> -d TEST -f <out_folder>` to produce CV model outputs using weights saved in `<weights_filepath>` on the MNIST test dataset.
 
-Finally, rerun the IE experiments with `main.py`, this time using the `--cv-output` argument to specify the location of the CV model output csv file.
+Finally, rerun the IE experiments with `main.py`, this time using the `--cv-output` or `-c` argument to specify the location of the CV model output csv file (you can omit the `-e` flag).
 
 Again, this can also be done from `CV_model.ipynb`.
 
