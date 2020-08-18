@@ -11,22 +11,22 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='CV Model Training Options')
-    parser.add_argument('-f', dest='out_folder', default='saved_weights', 
+    parser.add_argument('-f', dest='out_folder', default='saved_weights',
                         help='Output folder of saved training weights')
-    parser.add_argument('-e', dest='epochs', default=100, type=int, 
+    parser.add_argument('-e', dest='epochs', default=100, type=int,
                         help='Number of epochs to train')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Output verbosity')
-    
+
     args = parser.parse_args()
-    
+
     checkpoint_filepath = os.path.join(args.out_folder, "saved-model-{epoch:02d}-{val_acc:.2f}.hdf5")
-    
+
     try:
         os.makedirs(args.out_folder)
     except FileExistsError:
@@ -89,7 +89,7 @@ if __name__ == '__main__':
                         validation_data=(x_test, y_test),
                         callbacks=[checkpoint])
     score = model.evaluate(x_test, y_test, verbose=0)
-    
+
     losses = pd.DataFrame.from_dict(history.history)
-    losses.rename(columns={'loss':'train_loss', 'acc':'train_acc'}, inplace=True)
+    losses.rename(columns={'loss': 'train_loss', 'acc': 'train_acc'}, inplace=True)
     losses.to_csv(os.path.join(args.out_folder, "history.csv"))

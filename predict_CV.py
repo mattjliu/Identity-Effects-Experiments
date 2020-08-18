@@ -11,19 +11,19 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CV model Prediction Options')
-    parser.add_argument('-w', dest='weights_folder', required=True, 
-                        help='Weights folder')
-    parser.add_argument('-d', dest='dataset', choices=['TEST', 'TRAIN'], required=True, 
+    parser.add_argument('-w', dest='weights_file', required=True,
+                        help='Weights file')
+    parser.add_argument('-d', dest='dataset', choices=['TEST', 'TRAIN'], required=True,
                         help='Predict on MNIST test or MNIST train set')
-    parser.add_argument('-f', dest='out_file', required=True, 
+    parser.add_argument('-f', dest='out_file', required=True,
                         help='Output filpath for CV predictions')
-    
+
     args = parser.parse_args()
-    
+
     num_classes = 10
 
     # input image dimensions
@@ -65,21 +65,21 @@ if __name__ == '__main__':
     model.compile(loss=keras.losses.categorical_crossentropy,
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
-    
+
     if args.dataset == 'TEST':
-        x,y = x_test,y_test
+        x, y = x_test, y_test
     else:
-        x,y = x_train,y_train
-    
-    model.load_weights(args.weights_folder)
+        x, y = x_train, y_train
+
+    model.load_weights(args.weights_file)
     softmaxes = model.predict(x)
     predictions = np.argmax(softmaxes, axis=1)
     labels = np.argmax(y, axis=1)
     data = np.concatenate((softmaxes,
-                           predictions.reshape((x.shape[0],1)),
-                           labels.reshape((x.shape[0],1))), axis=1)
-    output = pd.DataFrame(data,columns=[str(i) for i in range(10)]+['pred','label'])
-    
+                           predictions.reshape((x.shape[0], 1)),
+                           labels.reshape((x.shape[0], 1))), axis=1)
+    output = pd.DataFrame(data, columns=[str(i) for i in range(10)] + ['pred', 'label'])
+
     try:
         os.makedirs(os.path.dirname(args.out_file))
     except FileExistsError:

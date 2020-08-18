@@ -13,7 +13,7 @@ from scipy.stats import ortho_group
 from pathlib import Path
 import argparse
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 ##################################### Alpha Encodings #####################################
 
@@ -340,7 +340,7 @@ def run_experiment(out_folder, epochs_list, units_list, encoding_f=None, encodin
         for j in range(n_experiments):
             if verbose:
                 print(f'Training: {i+1} Layers - Experiment {j+1}')
-                
+
             K.clear_session()
 
             # Create x_train words
@@ -412,7 +412,7 @@ if __name__ == '__main__':
     parser.add_argument('-u', '--units', type=int, help='Number of hidden units for each model', required=True)
     parser.add_argument('-e', '--encoding', choices=['one-hot', 'distributed', 'haar'],
                         help='Type of encoding for ALPHA experiments. Only set if data is ALPHA')
-    parser.add_argument('-c', '--cv-output', dest='cv_output', 
+    parser.add_argument('-c', '--cv-output', dest='cv_output',
                         help='Filepath for CV model output file.')
     parser.add_argument('-r', '--runs', default=40,
                         type=int, help='Number of runs per experiment')
@@ -426,13 +426,13 @@ if __name__ == '__main__':
                         help='Output verbosity')
 
     args = parser.parse_args()
-    
-    if args.data == 'ALPHA': 
+
+    if args.data == 'ALPHA':
         if args.cv_output:
             parser.error('--cv-output can only be set when data=MNIST')
         elif not args.encoding:
             parser.error('--encodings needs to be set when data=ALPHA')
-        
+
         encodings_dict = {
             'one-hot': get_one_hot_encoding,
             'distributed': get_distr_j_encoding,
@@ -441,20 +441,14 @@ if __name__ == '__main__':
         run_experiment(out_folder=args.out_folder, epochs_list=[args.iterations] * 3, units_list=[args.units] * 3,
                        encoding_f=encodings_dict[args.encoding], n_experiments=args.runs, model_type=args.model,
                        data_type=args.data, learning_rate=args.learning_rate, optimizer_type=args.optimizer, verbose=args.verbose)
-            
+
     elif args.data == args.data == 'MNIST':
         if args.encoding:
             parser.error('--encoding can only be set when data=ALPHA')
         elif not args.cv_output:
             parser.error('--cv-output needs to be set when data=MNIST')
-            
+
         df = pd.read_csv(args.cv_output)
         run_experiment(out_folder=args.out_folder, epochs_list=[args.iterations] * 3, units_list=[args.units] * 3,
                        cv_pred_df=df, n_experiments=args.runs, model_type=args.model,
                        data_type=args.data, learning_rate=args.learning_rate, optimizer_type=args.optimizer, verbose=args.verbose)
-        
-        
-        
-        
-
-
