@@ -1,4 +1,10 @@
-# Temp-Name
+# Learning identity effects with neural networks
+
+This code can be used to reproduce the numerical experiments in the paper
+
+Invariance, encodings, and generalization: learning identity effects with neural networks
+by S. Brugiapaglia, M. Liu, P. Tupper
+https://arxiv.org/abs/2101.08386
 
 ## Setup and Installation
 
